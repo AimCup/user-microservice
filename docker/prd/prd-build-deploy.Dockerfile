@@ -5,5 +5,5 @@ RUN mvn -f /acservice/pom.xml clean package -P prd
 
 FROM arm32v7/eclipse-temurin:17
 COPY --from=build /acservice/target/*.jar app.jar
-EXPOSE 8101
+EXPOSE 8501
 ENTRYPOINT ["java","-Dspring.profiles.active=prd","-jar","/app.jar"]

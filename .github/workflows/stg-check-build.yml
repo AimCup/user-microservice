@@ -5,6 +5,8 @@ on:
     branches: [ "stage" ]
   pull_request:
     branches: [ "stage" ]
+  workflow_dispatch:
+    branches: [ "stage" ]
 
 jobs:
   build:
@@ -17,4 +19,32 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
       - name: Maven Verify
-        run: mvn --batch-mode --update-snapshots verify
+        run: mvn --batch-mode --update-snapshots verify -Pstg
+      - name: Upload coverage
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-case reports
+          path: target/site/jacoco
+  codacy-coverage-reporter:
+    runs-on: ubuntu-latest
+    name: codacy-coverage-reporter
+    needs: [ build ]
+    steps:
+      - uses: actions/checkout@v3
+      - name: download reports
+        uses: actions/download-artifact@v3
+        with:
+          name: test-case reports
+          path: target/site/jacoco
+      - name: Display structure of downloaded files
+        run: ls -R
+      - name: Run codacy-coverage-reporter
+        uses: codacy/codacy-coverage-reporter-action@v1
+        env:
+          CODACY_API_TOKEN: ${{ secrets.CODACY_API_TOKEN }}
+          CODACY_ORGANIZATION_PROVIDER: gh
+          CODACY_USERNAME: AimCup
+          CODACY_PROJECT_NAME: ${{ github.event.repository.name }}
+        with:
+          api-token: $CODACY_API_TOKEN
+          coverage-reports: ${{ github.workspace }}/target/site/jacoco/jacoco.xml

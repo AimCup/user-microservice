@@ -1,0 +1,16 @@
+UserResponseDTO:
+  type: object
+  properties:
+    id:
+      type: string
+      format: uuid
+    username:
+      type: string
+    osuId:
+      type: integer
+    isRestricted:
+      type: boolean
+    roles:
+      type: array
+      items:
+        $ref: '../roles/role-response.yaml#/RoleResponseDTO'

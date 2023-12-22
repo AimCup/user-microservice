@@ -17,9 +17,23 @@ jobs:
         run: |
           docker-compose -f docker/stg/stg-run-database-job.yml up -d --build
         env:
-          POSTGRES_PASSWORD: ${{ secrets.EXAMPLE_DB_STG_PASSWORD }}
+          DB_STG_USER: ${{ secrets.DB_STG_USER }}
+          DB_STG_PASSWORD: ${{ secrets.DB_STG_PASSWORD }}
       - name: Build and deploy the Docker image
         run: |
           docker-compose -f docker/stg/stg-build-deploy-job.yml up -d --build
         env:
-          POSTGRES_PASSWORD: ${{ secrets.EXAMPLE_DB_STG_PASSWORD }}
+          DB_STG_ADDRESS: ${{ secrets.DB_STG_ADDRESS }}
+          DB_STG_USER: ${{ secrets.DB_STG_USER }}
+          DB_STG_PASSWORD: ${{ secrets.DB_STG_PASSWORD }}
+          EUREKA_STG: ${{ secrets.EUREKA_STG }}
+          STG_KEYCLOAK_NAME_ISSUER: ${{ secrets.STG_KEYCLOAK_NAME_ISSUER }}
+          STG_KEYCLOAK_CLIENT_NAME: ${{ secrets.STG_KEYCLOAK_CLIENT_NAME }}
+          STG_KEYCLOAK_CLIENT_ID: ${{ secrets.STG_KEYCLOAK_CLIENT_ID }}
+          STG_KEYCLOAK_CLIENT_SECRET: ${{ secrets.STG_KEYCLOAK_CLIENT_SECRET }}
+          STG_KEYCLOAK_URI: ${{ secrets.STG_KEYCLOAK_URI }}
+          STG_KEYCLOAK_REALM_NAME: ${{ secrets.STG_KEYCLOAK_REALM_NAME }}
+          STG_MANAGEMENT_KEYCLOAK_CLIENT_ID: ${{ secrets.STG_MANAGEMENT_KEYCLOAK_CLIENT_ID }}
+          STG_MANAGEMENT_KEYCLOAK_CLIENT_SECRET: ${{ secrets.STG_MANAGEMENT_KEYCLOAK_CLIENT_SECRET }}
+          STG_OSU_API_CLIENT_ID: ${{ secrets.STG_OSU_API_CLIENT_ID }}
+          STG_OSU_API_CLIENT_SECRET: ${{ secrets.STG_OSU_API_CLIENT_SECRET }}

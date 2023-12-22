@@ -1,15 +1,14 @@
 openapi: 3.0.2
 info:
-  title: Sample OpenAPI Specification for Spring Boot API
+  title: Auth microservice
   version: 1.0.0
-  description: A sample Spring Boot API using OpenAPI specification
+  description: OpenAPI specification for Auth microservice
   contact:
     name: AimCup
     email: aimcupdev@gmail.com
-tags:
-  - name: Sample-OpenApi
-    description: Sample-OpenApi
 
 paths:
-  /examples:
-    $ref: './paths/example/example.yaml'
+  /me:
+    $ref: './paths/user/user.yaml'
+  /{osuId}:
+    $ref: './paths/user/user-by-osu-id.yaml'

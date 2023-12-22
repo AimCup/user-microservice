@@ -1,20 +1,20 @@
 version: '3.8'
 
 services:
-  db-example-microservice:
+  db-user-microservice:
     image: postgres:15.1
     restart: always
     environment:
-      POSTGRES_USER: example-db-username
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: example-db-name
+      POSTGRES_USER: ${DB_STG_USER}
+      POSTGRES_PASSWORD: ${DB_STG_PASSWORD}
+      POSTGRES_DB: user
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 5s
       timeout: 5s
       retries: 5
     ports:
-      - "5501:5432"
+      - "5702:5432"
 
 networks:
   default:

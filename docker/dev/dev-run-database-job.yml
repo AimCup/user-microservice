@@ -5,8 +5,8 @@ services:
     image: postgres:15.1
     restart: always
     environment:
-      POSTGRES_USER: ${DB_PRD_USER}
-      POSTGRES_PASSWORD: ${DB_PRD_PASSWORD}
+      POSTGRES_USER: testUser
+      POSTGRES_PASSWORD: testPassword
       POSTGRES_DB: user
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
@@ -14,9 +14,4 @@ services:
       timeout: 5s
       retries: 5
     ports:
-      - "5701:5432"
-
-networks:
-  default:
-    external: true
-    name: aimcup-network
+      - "5432:5432"

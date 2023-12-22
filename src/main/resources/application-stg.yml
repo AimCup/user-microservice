@@ -1,18 +1,19 @@
 eureka:
   client:
     service-url:
-      defaultZone: http://172.18.0.1:8762/eureka
+      defaultZone: http://${EUREKA_STG}/eureka
 server:
   servlet:
-    context-path: /example-path
-  port: 8201
+    context-path: /user
+  port: 8502
+  forward-headers-strategy: native
 spring:
   application:
-    name: example-microservice
+    name: user-microservice
   datasource:
-    url: jdbc:postgresql://172.18.0.1:5501/example-db-name
-    username: example-db-username
-    password: ${EXAMPLE_DB_STG_PASSWORD}
+    url: jdbc:postgresql://${DB_STG_ADDRESS}/user
+    username: ${DB_STG_USER}
+    password: ${DB_STG_PASSWORD}
     driver-class-name: org.postgresql.Driver
     hikari:
       connection-timeout: 10000
@@ -28,3 +29,36 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        hbm2ddl:
+          auto: validate
+  security:
+    oauth2:
+      client:
+        provider:
+          aimcup:
+            issuer-uri: ${STG_KEYCLOAK_NAME_ISSUER}
+        registration:
+          aimcup:
+            provider: aimcup
+            client-name: ${STG_KEYCLOAK_CLIENT_NAME}
+            client-id: ${STG_KEYCLOAK_CLIENT_ID}
+            client-secret: ${STG_KEYCLOAK_CLIENT_SECRET}
+            scope: profile,openid,offline_access
+            redirect-uri: '{baseUrl}/login/oauth2/code/{registrationId}'
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${STG_KEYCLOAK_JWK_SET_URI}
+  main:
+    allow-bean-definition-overriding: true
+
+aimcup:
+  keycloak:
+    serverUrl: ${STG_KEYCLOAK_URI}
+    realm: ${STG_KEYCLOAK_REALM_NAME}
+    clientId: ${STG_MANAGEMENT_KEYCLOAK_CLIENT_ID}
+    clientSecret: ${STG_MANAGEMENT_KEYCLOAK_CLIENT_SECRET}
+
+osu:
+  api:
+    clientId: ${STG_OSU_API_CLIENT_ID}
+    clientSecret: ${STG_OSU_API_CLIENT_SECRET}

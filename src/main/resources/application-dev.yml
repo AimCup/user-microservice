@@ -3,13 +3,13 @@ eureka:
     enabled: false
 server:
   servlet:
-    context-path: /example-path
-  port: 0
+    context-path: /user
+  port: 8080
 spring:
   application:
-    name: example-microservice
+    name: user-microservice
   datasource:
-    url: jdbc:postgresql://localhost:5455/example-db-name
+    url: jdbc:postgresql://localhost:5432/user
     username: testUser
     password: testPassword
     driver-class-name: org.postgresql.Driver
@@ -27,3 +27,36 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        hbm2ddl:
+          auto: validate
+  security:
+    oauth2:
+      client:
+        provider:
+          aimcup:
+            issuer-uri: ${OSU_KEYCLOAK_ISSUER_ID}
+        registration:
+          aimcup:
+            provider: aimcup
+            client-name: ${OSU_KEYCLOAK_CLIENT_NAME}
+            client-id: ${OSU_KEYCLOAK_CLIENT_ID}
+            client-secret: ${OSU_KEYCLOAK_CLIENT_SECRET}
+            scope: profile,openid,offline_access
+            redirect-uri: '{baseUrl}/login/oauth2/code/{registrationId}'
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${OSU_KEYCLOAK_JWK_SET_URI}
+  main:
+    allow-bean-definition-overriding: true
+
+aimcup:
+  keycloak:
+    serverUrl: ${STG_KEYCLOAK_URI}
+    realm: ${STG_KEYCLOAK_REALM_NAME}
+    clientId: ${STG_MANAGEMENT_KEYCLOAK_CLIENT_ID}
+    clientSecret: ${STG_MANAGEMENT_KEYCLOAK_CLIENT_SECRET}
+
+osu:
+  api:
+    clientId: ${STG_OSU_API_CLIENT_ID}
+    clientSecret: ${STG_OSU_API_CLIENT_SECRET}

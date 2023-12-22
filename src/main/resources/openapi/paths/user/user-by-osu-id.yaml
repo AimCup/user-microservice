@@ -1,0 +1,19 @@
+get:
+  tags:
+    - User
+  summary: Get user by osu! ID
+  operationId: get-user-by-osu-id
+  parameters:
+    - name: osuId
+      in: path
+      required: true
+      schema:
+        type: string
+        description: osu! ID
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../../models/user/user-response.yaml#/UserResponseDTO'
